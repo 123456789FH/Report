@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>تقرير مبادرة جُرّة — تطبيق تفاعلي (أجاويد 4)</title>
+  <title>التقرير الختامي لمبادرة جُرّة — تطبيق تفاعلي (أجاويد 4)</title>
 
-  <!-- Tailwind CDN -->
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 
-  <!-- Fonts (نفس طابع الهوية) -->
+  <!-- Fonts (مطابق لطابع الهوية) -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 
   <!-- Icons -->
@@ -17,28 +17,24 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 
-  <!-- QR generator -->
+  <!-- QR -->
   <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
 
   <style>
     * { font-family: 'Cairo','Tajawal', sans-serif; }
 
     :root{
-      /* ✅ ألوان الهوية البصرية المستخرجة من واجهتك */
-      --aj-maroon:#663535;     /* نبيذي/عنابي */
-      --aj-maroon-2:#6B4C4B;   /* نبيذي فاتح */
-      --aj-cream:#F8F6F1;      /* كريمي فاتح */
-      --aj-beige:#E4DCC9;      /* بيج */
-      --aj-sand:#D9D1B9;       /* رملي */
-      --aj-sand-2:#C9BEAB;     /* رملي أغمق */
-      --aj-ink:#2B1E1E;        /* داكن للنص */
-      --aj-muted:#6B7280;      /* رمادي للنص الثانوي */
-
-      /* تُستخدم للأزرار الثانوية */
-      --aj-accent:#0FA395;     /* من شعار الوزارة (اختياري للأيقونات) */
+      /* ✅ ألوان الهوية (حسب واجهتك) */
+      --aj-maroon:#663535;
+      --aj-maroon-2:#6B4C4B;
+      --aj-cream:#F8F6F1;
+      --aj-beige:#E4DCC9;
+      --aj-sand:#D9D1B9;
+      --aj-sand-2:#C9BEAB;
+      --aj-ink:#2B1E1E;
+      --aj-muted:#6B7280;
     }
 
-    /* خلفية بنفس طابع الهوية */
     .aj-bg{
       background:
         radial-gradient(1000px 500px at 15% 15%, rgba(102,53,53,.10), transparent 60%),
@@ -82,14 +78,12 @@
     }
     .btn:active{ transform: scale(.98); }
 
-    /* الزر الرئيسي بنفس لون الهوية (عنابي) */
     .btn-primary{
       background: linear-gradient(135deg, var(--aj-maroon), var(--aj-maroon-2));
       color: #fff;
       box-shadow: 0 10px 24px rgba(102,53,53,.18);
     }
 
-    /* زر رملي/ذهبي-بيج */
     .btn-gold{
       background: linear-gradient(135deg, var(--aj-sand), var(--aj-beige));
       color: var(--aj-ink);
@@ -160,11 +154,16 @@
       overflow:hidden;
     }
 
-    /* شريط علوي مثل الهوية */
     .top-strip{
       background: linear-gradient(90deg, rgba(201,190,171,.35), rgba(248,246,241,.85), rgba(201,190,171,.35));
       border-bottom: 1px solid rgba(201,190,171,.55);
     }
+
+    /* ✅ لو الصورة غير موجودة: نخفيها بدل أيقونة مكسورة */
+    .logo-img{ display:block; }
+    .logo-fallback{ display:none; }
+    .logo-wrap.missing .logo-img{ display:none; }
+    .logo-wrap.missing .logo-fallback{ display:flex; }
 
     @media print{
       .no-print{ display:none !important; }
@@ -182,15 +181,26 @@
   <div class="top-strip no-print">
     <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-3">
       <div class="flex items-center gap-2">
-        <img id="logoAjawidMini" alt="أجاويد 4" class="h-9 w-auto object-contain"
-             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZ8AAAIbCAYAAAD2lR6PAAAACXBIWXMAAAsSAAALEgHS3X78AAAgAElEQVR4nO3de5BdZ30n8M+5j..."/>
+        <div class="logo-wrap" id="wrapAjMini">
+          <img class="logo-img h-9 w-auto object-contain" alt="أجاويد 4" src="assets/ajawid4.png"
+               onerror="document.getElementById('wrapAjMini').classList.add('missing')">
+          <div class="logo-fallback items-center gap-2 text-xs font-extrabold px-3 py-1 rounded-full bg-white/70 border border-black/5">
+            <i class="bi bi-image"></i><span>أجاويد 4</span>
+          </div>
+        </div>
         <span class="text-sm font-extrabold text-[var(--aj-maroon)]">أجاويد 4 — ويستمر الأثر</span>
       </div>
 
       <div class="flex items-center gap-3">
         <span class="text-sm font-extrabold text-[var(--aj-maroon)]">الإدارة العامة للتعليم بمنطقة عسير</span>
-        <img id="logoMoEmini" alt="وزارة التعليم" class="h-9 w-auto object-contain"
-             src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAoHBwgHBgoICAkLCgkLDhgQDg0NDh0VFhEYFxUYGBYV..."/>
+
+        <div class="logo-wrap" id="wrapMoeMini">
+          <img class="logo-img h-9 w-auto object-contain" alt="وزارة التعليم" src="assets/moe.png"
+               onerror="document.getElementById('wrapMoeMini').classList.add('missing')">
+          <div class="logo-fallback items-center gap-2 text-xs font-extrabold px-3 py-1 rounded-full bg-white/70 border border-black/5">
+            <i class="bi bi-image"></i><span>وزارة التعليم</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -205,17 +215,32 @@
 
           <!-- Logos -->
           <div class="flex items-center gap-3">
-            <!-- Ajawid 4 (calligraphy) -->
-            <img id="logoAjawid" alt="Ajawid 4" class="w-14 h-14 rounded-2xl bg-white/60 object-contain border border-black/5"
-                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZ8AAAIbCAYAAAD2lR6PAAAACXBIWXMAAAsSAAALEgHS3X78AAAgAElEQVR4nO3de5BdZ30n8M+5j..."/>
+            <div class="logo-wrap" id="wrapAj">
+              <img class="logo-img w-14 h-14 rounded-2xl bg-white/60 object-contain border border-black/5"
+                   alt="أجاويد 4" src="assets/ajawid4.png"
+                   onerror="document.getElementById('wrapAj').classList.add('missing')">
+              <div class="logo-fallback w-14 h-14 rounded-2xl bg-white/70 border border-black/5 items-center justify-center text-xs font-extrabold">
+                أجاويد
+              </div>
+            </div>
 
-            <!-- Jurra -->
-            <img id="logoJurra" alt="جُرّة" class="w-14 h-14 rounded-2xl bg-white/60 object-contain border border-black/5"
-                 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWoAAAEBCAYAAABfXoQ0AAAACXBIWXMAAAsSAAALEgHS3X78AAA..." />
+            <div class="logo-wrap" id="wrapJurra">
+              <img class="logo-img w-14 h-14 rounded-2xl bg-white/60 object-contain border border-black/5"
+                   alt="جُرّة" src="assets/jurra.png"
+                   onerror="document.getElementById('wrapJurra').classList.add('missing')">
+              <div class="logo-fallback w-14 h-14 rounded-2xl bg-white/70 border border-black/5 items-center justify-center text-xs font-extrabold">
+                جُرّة
+              </div>
+            </div>
 
-            <!-- MoE -->
-            <img id="logoMoE" alt="وزارة التعليم" class="w-14 h-14 rounded-2xl bg-white/60 object-contain border border-black/5"
-                 src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAoHBwgHBgoICAkLCgkLDhgQDg0NDh0VFhEYFxUYGBYV..." />
+            <div class="logo-wrap" id="wrapMoe">
+              <img class="logo-img w-14 h-14 rounded-2xl bg-white/60 object-contain border border-black/5"
+                   alt="وزارة التعليم" src="assets/moe.png"
+                   onerror="document.getElementById('wrapMoe').classList.add('missing')">
+              <div class="logo-fallback w-14 h-14 rounded-2xl bg-white/70 border border-black/5 items-center justify-center text-xs font-extrabold">
+                التعليم
+              </div>
+            </div>
           </div>
 
           <div>
@@ -297,7 +322,7 @@
     </div>
   </header>
 
-  <!-- Main Layout -->
+  <!-- Main -->
   <main class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-4">
     <!-- Sidebar -->
     <aside class="no-print lg:col-span-3">
@@ -338,9 +363,7 @@
           <div class="flex items-start justify-between gap-3">
             <div>
               <h2 class="text-xl font-extrabold">لوحة المؤشرات</h2>
-              <p class="mt-1 muted">
-                مقارنة المستهدف بالمحقق + قياس قبلي/بعدي + قراءة سريعة للأداء.
-              </p>
+              <p class="mt-1 muted">مقارنة المستهدف بالمحقق + قياس قبلي/بعدي + قراءة سريعة للأداء.</p>
             </div>
             <button class="no-print btn btn-ghost" onclick="openEditor('dashboardNotes','ملاحظات اللوحة')">
               <i class="bi bi-chat-left-text me-1"></i> تحرير الملاحظات
@@ -353,9 +376,7 @@
                 <div class="font-extrabold">مستهدف / محقق</div>
                 <span class="badge-aj text-xs px-2 py-1 rounded-full font-extrabold">KPI</span>
               </div>
-              <div class="mt-3">
-                <canvas id="chartKPI" height="170"></canvas>
-              </div>
+              <div class="mt-3"><canvas id="chartKPI" height="170"></canvas></div>
             </div>
 
             <div class="card rounded-2xl p-4">
@@ -363,16 +384,14 @@
                 <div class="font-extrabold">قياس قبلي / بعدي</div>
                 <span class="badge-aj text-xs px-2 py-1 rounded-full font-extrabold">Pre / Post</span>
               </div>
-              <div class="mt-3">
-                <canvas id="chartPrePost" height="170"></canvas>
-              </div>
+              <div class="mt-3"><canvas id="chartPrePost" height="170"></canvas></div>
             </div>
           </div>
 
           <div class="mt-4 card rounded-2xl p-4">
             <div class="flex items-center justify-between gap-2">
               <div class="font-extrabold">ملاحظات تنفيذية</div>
-              <span class="text-xs muted">تظهر هنا خلاصة سريعة للمحكّم قبل التفاصيل</span>
+              <span class="text-xs muted">خلاصة سريعة للمحكّم قبل التفاصيل</span>
             </div>
             <div id="dashboardNotes" class="mt-3 leading-7">—</div>
           </div>
@@ -415,7 +434,7 @@
 
                 <div class="mt-3 hr-aj"></div>
                 <div class="text-xs muted">
-                  (الشعارات مدمجة داخل الملف — لا تحتاج مجلد assets)
+                  ضع الشعارات هنا: <b>assets/ajawid4.png</b> — <b>assets/jurra.png</b> — <b>assets/moe.png</b>
                 </div>
               </div>
             </div>
@@ -559,16 +578,14 @@
                   <tbody id="prepostTable"></tbody>
                 </table>
               </div>
-              <div class="mt-3 text-xs muted">
-                * التحسن = ((بعدي − قبلي) ÷ قبلي) × ١٠٠
-              </div>
+              <div class="mt-3 text-xs muted">* التحسن = ((بعدي − قبلي) ÷ قبلي) × ١٠٠</div>
             </div>
           </div>
 
           <div class="mt-4 card rounded-2xl p-4">
             <div class="flex items-center justify-between gap-2">
               <div class="font-extrabold">السرد التحليلي للأثر</div>
-              <span class="text-xs muted">جملة قوية موجزة توضح “ماذا تغيّر؟” بالأرقام</span>
+              <span class="text-xs muted">جملة موجزة توضح التحول بالأرقام</span>
             </div>
             <div id="impactNarrative" class="mt-2 leading-7"></div>
           </div>
@@ -917,12 +934,8 @@ const defaultData = {
     { title:"ألبوم الصور", url:"" },
     { title:"الفيديوهات", url:"" }
   ],
-  eventsLog: [
-    { date:"", title:"", place:"", audience:"", count:0, hours:0, proof:"" }
-  ],
-  meetingsLog: [
-    { date:"", type:"", channel:"واتساب", attendees:"", purpose:"", decisions:"", proof:"" }
-  ],
+  eventsLog: [{ date:"", title:"", place:"", audience:"", count:0, hours:0, proof:"" }],
+  meetingsLog: [{ date:"", type:"", channel:"واتساب", attendees:"", purpose:"", decisions:"", proof:"" }],
   expo3days: false
 };
 
@@ -977,8 +990,11 @@ function go(view){
 /* Modal Editor */
 function openEditor(targetId, title){
   if (!editMode){
-    alert("فعّل وضع التحرير أولًا.");
-    return;
+    // ✅ لا نطلع تنبيه مزعج، فقط نفعّل التحرير تلقائيًا
+    editMode = true;
+    document.getElementById('editLabel').textContent = "إيقاف التحرير";
+    setStatus("تم تفعيل التحرير");
+    setTimeout(()=>setStatus("جاهز"), 900);
   }
   modalTargetId = targetId;
   document.getElementById('modalTitle').textContent = title || "تحرير";
@@ -1023,7 +1039,8 @@ function mapDomToState(id, html){
 function toggleEdit(){
   editMode = !editMode;
   document.getElementById('editLabel').textContent = editMode ? "إيقاف التحرير" : "وضع التحرير";
-  alert(editMode ? "تم تفعيل وضع التحرير ✅" : "تم إيقاف التحرير.");
+  setStatus(editMode ? "تم تفعيل التحرير" : "تم إيقاف التحرير");
+  setTimeout(()=>setStatus("جاهز"), 900);
 }
 
 /* Identity inputs */
@@ -1045,43 +1062,28 @@ function toggleExpo3(checked){
 
 /* KPI & PrePost editors */
 function openKpiEditor(){
-  if (!editMode) return alert("فعّل وضع التحرير أولًا.");
   const json = prompt("عدّل مؤشرات KPI بصيغة JSON (label,target,achieved):", JSON.stringify(state.kpis, null, 2));
   if (!json) return;
   try{
     const arr = JSON.parse(json);
     if (!Array.isArray(arr)) throw new Error();
-    state.kpis = arr.map(x=>({
-      label: String(x.label ?? ""),
-      target: safeNum(x.target),
-      achieved: safeNum(x.achieved),
-    }));
+    state.kpis = arr.map(x=>({ label: String(x.label ?? ""), target: safeNum(x.target), achieved: safeNum(x.achieved) }));
     autosave();
     renderAll();
-  }catch{
-    alert("صيغة غير صحيحة.");
-  }
+  }catch{ alert("صيغة غير صحيحة."); }
 }
 function openPrePostEditor(){
-  if (!editMode) return alert("فعّل وضع التحرير أولًا.");
   const json = prompt("عدّل القياس القبلي/البعدي بصيغة JSON (label,pre,post):", JSON.stringify(state.prepost, null, 2));
   if (!json) return;
   try{
     const arr = JSON.parse(json);
     if (!Array.isArray(arr)) throw new Error();
-    state.prepost = arr.map(x=>({
-      label: String(x.label ?? ""),
-      pre: safeNum(x.pre),
-      post: safeNum(x.post),
-    }));
+    state.prepost = arr.map(x=>({ label: String(x.label ?? ""), pre: safeNum(x.pre), post: safeNum(x.post) }));
     autosave();
     renderAll();
-  }catch{
-    alert("صيغة غير صحيحة.");
-  }
+  }catch{ alert("صيغة غير صحيحة."); }
 }
 function openMediaEditor(){
-  if (!editMode) return alert("فعّل وضع التحرير أولًا.");
   const json = prompt("عدّل الإعلام بصيغة JSON (posts,videos,albums,links):", JSON.stringify(state.media, null, 2));
   if (!json) return;
   try{
@@ -1092,12 +1094,9 @@ function openMediaEditor(){
     state.media.links = Array.isArray(obj.links) ? obj.links.map(l=>({title:String(l.title??""), url:String(l.url??"")})) : state.media.links;
     autosave();
     renderAll();
-  }catch{
-    alert("صيغة غير صحيحة.");
-  }
+  }catch{ alert("صيغة غير صحيحة."); }
 }
 function openAppendixEditor(){
-  if (!editMode) return alert("فعّل وضع التحرير أولًا.");
   const json = prompt("عدّل روابط الملاحق بصيغة JSON (title,url):", JSON.stringify(state.appendixLinks, null, 2));
   if (!json) return;
   try{
@@ -1106,16 +1105,13 @@ function openAppendixEditor(){
     state.appendixLinks = arr.map(x=>({title:String(x.title??""), url:String(x.url??"")}));
     autosave();
     renderAll();
-  }catch{
-    alert("صيغة غير صحيحة.");
-  }
+  }catch{ alert("صيغة غير صحيحة."); }
 }
 
 /* Events / Meetings CRUD */
 function openAddEvent(){
-  if (!editMode) return alert("فعّل وضع التحرير أولًا.");
   const e = {
-    date: prompt("تاريخ الفعالية (مثال: 1447/09/10):", "") ?? "",
+    date: prompt("تاريخ الفعالية:", "") ?? "",
     title: prompt("اسم النشاط:", "") ?? "",
     place: prompt("الموقع/القناة:", "") ?? "",
     audience: prompt("الفئة المستفيدة:", "") ?? "",
@@ -1130,7 +1126,6 @@ function openAddEvent(){
   renderAll();
 }
 function deleteEvent(i){
-  if (!editMode) return;
   if (!confirm("حذف هذه الفعالية؟")) return;
   state.eventsLog.splice(i,1);
   recalcMetrics();
@@ -1140,22 +1135,20 @@ function deleteEvent(i){
 }
 
 function openAddMeeting(){
-  if (!editMode) return alert("فعّل وضع التحرير أولًا.");
   const m = {
     date: prompt("تاريخ الاجتماع:", "") ?? "",
-    type: prompt("نوع اللقاء (تنسيقي/تشغيلي/…) :", "") ?? "",
-    channel: prompt("القناة (واتساب/اجتماع/هاتف/…) :", "واتساب") ?? "واتساب",
+    type: prompt("نوع اللقاء:", "") ?? "",
+    channel: prompt("القناة:", "واتساب") ?? "واتساب",
     attendees: prompt("الحضور:", "") ?? "",
     purpose: prompt("الهدف:", "") ?? "",
     decisions: prompt("أبرز القرارات:", "") ?? "",
-    proof: prompt("رابط/دليل (لقطة/محضر):", "") ?? ""
+    proof: prompt("رابط/دليل:", "") ?? ""
   };
   state.meetingsLog.push(m);
   autosave();
   renderMeetings();
 }
 function deleteMeeting(i){
-  if (!editMode) return;
   if (!confirm("حذف هذا الاجتماع؟")) return;
   state.meetingsLog.splice(i,1);
   autosave();
@@ -1176,9 +1169,7 @@ function importJSON(file){
       autosave();
       renderAll();
       alert("تم الاستيراد بنجاح ✅");
-    }catch{
-      alert("تعذر قراءة الملف.");
-    }
+    }catch{ alert("تعذر قراءة الملف."); }
   };
   reader.readAsText(file);
 }
@@ -1268,8 +1259,7 @@ function renderEvents(){
   const q = (document.getElementById('eventFilter')?.value || "").trim().toLowerCase();
   tbody.innerHTML = "";
 
-  const list = state.eventsLog
-    .map((e, idx)=>({e, idx}))
+  const list = state.eventsLog.map((e, idx)=>({e, idx}))
     .filter(({e})=>{
       const hay = `${e.date} ${e.title} ${e.place} ${e.audience}`.toLowerCase();
       return !q || hay.includes(q);
@@ -1306,8 +1296,7 @@ function renderMeetings(){
   const q = (document.getElementById('meetingFilter')?.value || "").trim().toLowerCase();
   tbody.innerHTML = "";
 
-  const list = state.meetingsLog
-    .map((m, idx)=>({m, idx}))
+  const list = state.meetingsLog.map((m, idx)=>({m, idx}))
     .filter(({m})=>{
       const hay = `${m.date} ${m.type} ${m.channel} ${m.attendees} ${m.purpose} ${m.decisions}`.toLowerCase();
       return !q || hay.includes(q);
